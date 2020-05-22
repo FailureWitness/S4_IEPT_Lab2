@@ -1,0 +1,87 @@
+<html>
+<head>
+	<title>IEPT_Lab2</title>
+	<link rel = "stylesheet" th:href = "@{/resources/css/mainStyle.css}" />
+	<link rel = "stylesheet" th:href = "@{/resources/css/list.css}" />
+	<link rel = "stylesheet" th:href = "@{/resources/css/update.css}" />
+</head>
+<body>
+	<div class = "body-fill">
+		<div class = "nav-place">
+			<ul class = "nav-bar">
+				<li class = "nav-item" th:each = "navItem: ${navBar}">
+					<a class = "nav-item-href" th:href = "${navItem.getHref()}">[[${navItem.getName()}]]</a>
+				</li>
+			</ul>
+		</div>
+		<div class = "content">
+			<h1 th:if = "${title}">[[${title}]]</h1>
+			<form th:each = "listItem, iter: ${list}" th:class = "${listItem.getCssClass().getName()}" 
+								th:action = "${formAction}" th:method = "${method}" th:id = "'list-item-' + ${iter.index}">
+				
+				<th:block th:switch = "${listItem.getInput().getType()}">
+				
+				<input th:case = "${submit}" type = "submit" class = "list-body" th:value = "${listItem.getInput().getValue()}"/>
+				<input th:case = "${button}" type = "button" class = "list-body" th:id = "${listItem.getInput().getJsId()}" th:value = "${listItem.getInput().getName()}"/>
+								
+				</th:block>
+				<input type = "hidden" th:each = "hidden: ${listItem.getHiddenList()}" th:name = "${hidden.getName()}" th:value = "${hidden.getValue()}">
+			</form>
+			<div th:if = "${updatePopup}" class = "update-popup" th:id = "${updatePopup.getPopupId()}">
+				<div class = "update-content">
+					<div class = "title">[[${updatePopup.getTitle()}]]</div>
+					<form class = "update-form" th:id = "${updatePopup.getFormId()}" th:action = "${updatePopup.getFormAction()}" method = "post" autocomplete = "off";>
+						<p class = "error" th:id = "error">[[${updatePopup.getError()}]]</p>
+						<th:block th:each = "listItem: ${updatePopup.getInputs()}" th:switch = "${listItem.getType()}">
+						
+						<div th:case = "${text}">
+							<p class = "text">[[${listItem.getText()}]]</p>
+							<input type = "text" th:name = "${listItem.getName()}" th:value = "${listItem.getValue()}"/>
+						</div>
+						
+						<div th:case = "${number}">
+							<p class = "text">[[${listItem.getText()}]]</p>
+							<input type = "number" th:name = "${listItem.getName()}" th:value = "${listItem.getValue()}"/>
+						</div>
+						
+						<div th:case = "${select}">
+							<p class = "text">[[${listItem.getText()}]]</p>
+							<select th:name = "${listItem.getName()}">
+								<th:block th:each = "option: ${listItem.getOptions()}">
+								<option th:if = "${option.isSelected()}" th:value = "${option.getValue()}" selected>[[${option.getName()}]]</option>
+								<option th:if = "${!option.isSelected()}" th:value = "${option.getValue()}">[[${option.getName()}]]</option>
+								</th:block>
+							</select>
+						</div>
+						
+						<th:block th:case = "${submit}">
+						<input class = "button" type = "submit" th:name = "action" th:value = "${listItem.getValue()}"/>
+						</th:block>
+		
+						<th:block th:case = "${hidden}">
+						<input type = "hidden" th:name = "${listItem.getName()}" th:value = "${listItem.getValue()}"/>
+						</th:block>
+		
+						</th:block>
+					</form>
+				</div>
+			</div>
+			
+			<div th:if = "${listPopup}" class = "list-popup" id = "list-popup">
+				<div class = "list-popup-content">
+					<p id = "list-popup-message">SOME MESSAGE</p>
+					<form th:action = "${popupAction}" th:method = "post" id = "list-popup-form">
+						<input th:if = "${listPopupSelect}" class = "button" type = "submit" name = "action" value = "select"/>
+						<input th:if = "${listPopupDelete}" class = "button" type = "submit" name = "action" value = "delete"/>
+						<input type = "hidden" name = "itemId" value = "-" id = "list-popup-dynamic-hidden"/>
+						<input th:each = "hidden: ${listPopupHiddens}" type = "hidden" th:name = "${hidden.getName()}" th:value = "${hidden.getValue()}"/>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer class = "footer">[[${footer}]]</footer>
+	<script type="text/javascript" th:src = "@{/resources/JS/basic.js}"></script>
+	<script th:each = "link: ${jsLinks}" type="text/javascript" th:src = "@{/resources/JS/{file}(file = ${link})}"></script>
+</body>
+</html>

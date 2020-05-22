@@ -1,0 +1,55 @@
+<html>
+<head>
+	<title>IEPT_Lab2</title>
+	<link rel = "stylesheet" th:href = "@{/resources/css/update.css}" />
+	<link rel = "stylesheet" th:href = "@{/resources/css/mainStyle.css}" />
+</head>
+<body>
+	<div class = "body-fill">
+		<div class = "nav-place">
+			<ul class = "nav-bar">
+				<li class = "nav-item" th:each = "navItem: ${navBar}">
+					<a class = "nav-item-href" th:href = "${navItem.getHref()}">[[${navItem.getName()}]]</a>
+				</li>
+			</ul>
+		</div>
+		<div class = "content">
+			<form class = "control-form" th:action = "${formAction}" method = "post" autocomplete = "off";>
+				<p class = "error" th:if = "${error}">[[${error}]]</p>
+				<th:block th:each = "listItem: ${formList}" th:switch = "${listItem.getType()}">
+				
+				<div th:case = "${text}">
+					<p class = "text">[[${listItem.getText()}]]</p>
+					<input type = "text" th:name = "${listItem.getName()}" th:value = "${listItem.getValue()}"/>
+				</div>
+				
+				<div th:case = "${number}">
+					<p class = "text">[[${listItem.getText()}]]</p>
+					<input type = "number" th:name = "${listItem.getName()}" th:value = "${listItem.getValue()}"/>
+				</div>
+				
+				<div th:case = "${select}">
+					<p class = "text">[[${listItem.getText()}]]</p>
+					<select th:name = "${listItem.getName()}">
+						<th:block th:each = "option: ${listItem.getOptions()}">
+						<option th:if = "${option.isSelected()}" th:value = "${option.getValue()}" selected>[[${option.getName()}]]</option>
+						<option th:if = "${!option.isSelected()}" th:value = "${option.getValue()}">[[${option.getName()}]]</option>
+						</th:block>
+					</select>
+				</div>
+				
+				<th:block th:case = "${submit}">
+				<input class = "button" type = "submit" th:name = "action" th:value = "${listItem.getValue()}"/>
+				</th:block>
+
+				<th:block th:case = "${hidden}">
+				<input type = "hidden" th:name = "${listItem.getName()}" th:value = "${listItem.getValue()}"/>
+				</th:block>
+
+				</th:block>
+			</form>
+		</div>
+	</div>
+	<footer class = "footer">[[${footer}]]</footer>
+</body>
+</html>

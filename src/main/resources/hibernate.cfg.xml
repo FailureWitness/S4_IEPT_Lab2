@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+
+        <!-- database connection properties -->
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+	    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/IEPT_lab2_db</property>
+	    <property name="hibernate.current_session_context_class">thread</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">15426378</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property>
+
+        <!-- show mysql queries output in console -->
+        <property name="hibernate.show_sql">true</property>
+
+        <!-- manage automatic database creation -->
+        <!-- <property name="hibernate.hbm2ddl.auto">create</property> -->
+
+        <!-- add resources here -->
+        <mapping class = "hibernate.tables.Author"/>
+        <mapping class = "hibernate.tables.Book"/>
+        <mapping class = "hibernate.tables.Customer"/>
+        <mapping class = "hibernate.tables.Librarian"/>
+        <mapping class = "hibernate.tables.Library"/>
+        <mapping class = "hibernate.tables.Operation"/>
+    </session-factory>
+</hibernate-configuration>

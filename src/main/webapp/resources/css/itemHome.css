@@ -1,0 +1,13 @@
+.description p{
+	font-size: 25px;
+	font-weight: bold;
+	
+	margin: 10px 0;
+	margin-left: 20px;
+}
+.description p:first-child {
+	margin-top: 30px;
+}
+.description p:last-child {
+	margin-bottom: 30px;
+}
